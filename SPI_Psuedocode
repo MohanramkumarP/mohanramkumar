@@ -1,0 +1,77 @@
+
+// include all the reuired pre-processor files
+
+//Initialize the MCU and its clock system
+
+// Initialize GPIO pins for SPI communication
+GPIO_init()
+{
+ MOSI_PIN = output //Master Out Slave In
+ MISO_PIN = input //Master In Slave Out
+ SCK_PIN = output //Serial Clock)
+ SS_PIN =  output //Slave Select 
+/*Configure any additional GPIO pins as needed*/
+}
+// Configure SPI peripheral
+SPI_Init() {
+    // Set the SPI mode (master or slave) and clock polarity/phase
+    SPI_MODE = MASTER; // or SLAVE
+    SPI_CLOCK_POLARITY = LOW; // or HIGH
+    SPI_CLOCK_PHASE = FIRST_EDGE; // or SECOND_EDGE
+
+    // Set the data order (MSB or LSB first)
+    SPI_DATA_ORDER = MSB_FIRST; // or LSB_FIRST
+
+    // Set the SPI clock frequency
+    SPI_CLOCK_DIVIDER = 64; // Adjust as needed for the desired frequency
+
+    // Configure additional settings (e.g., interrupts, DMA, etc.)
+    // Enable the SPI peripheral
+    SPI_ENABLE = true;
+}
+// Function to transmit data using SPI
+Transmit_Data(data) {
+    // Write data to the SPI data register
+    SPI_DATA_REGISTER = data;
+}
+
+// Function to receive data using SPI
+Receive_Data() {
+    // Wait for the SPI receive buffer to be full
+    while (!SPI_RECEIVE_BUFFER_FULL) {
+        // Handle other tasks or sleep
+    }
+
+    // Read data from the SPI data register
+    return SPI_DATA_REGISTER;
+}
+
+// Function to select/deselect a slave device 
+Set_Slav_eSelect(pin, state) {
+    // Set the pin to the specified state
+    GPIO_SetState(pin, state);
+}
+
+void main()
+{
+    GPIO_init();
+    SPI_Init();
+    
+while (1) {
+    // Perform SPI communication with the sensor
+    if (SPI_READY_FOR_TRANSMISSION) {
+        // Select the sensor 
+        Set_Slave_Select(SS_PIN, LOW);
+
+        // Transmit data
+        Transmit_Data(dataToSend);
+
+        // Wait for transmission to complete
+        while (!SPI_TRANSMISSION_COMPLETE) {
+            // Handle other tasks or sleep to save power
+        }
+        // Receive data
+        receivedData = ReceiveData();
+    }
+}
+}
