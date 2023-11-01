@@ -1,0 +1,51 @@
+#include <stdio.h>
+#include <string.h>
+
+// structure to store data
+struct Data {
+    char customerID[10];
+    float latitude;
+    float longitude;
+    char direction;
+    float accelerometerX;
+    float accelerometerY;
+    int day;
+    int month;
+    int year;
+    char time[9]; 
+    char ampm;
+};
+
+int get_CSV(const char *csvData, struct Data *storedData) {
+    // Using sscanf to get CSV data
+    int result = sscanf(csvData, "#%5[^,],%f,%f,%c,%f,%f,%d,%d,%d,%8[^,],%c#", 
+        storedData->customerID, &storedData->latitude, &storedData->longitude, 
+        &storedData->direction, &storedData->accelerometerX, &storedData->accelerometerY,
+        &storedData->day, &storedData->month, &storedData->year, 
+        storedData->time,&storedData->ampm);
+
+}
+
+int main() {
+    // our data
+    const char *csvData = "#12UNI,123.456,342.785,E,12.5,34.6,01,01,983,01:23:34,AM#";
+
+    // Declare a structure to store the stored data
+    struct Data storedData;
+
+    get_CSV(csvData, &storedData);
+
+    
+        //printing the data in the structure
+        printf("Customer ID: %s\n", storedData.customerID);
+        printf("Latitude: %.3f\n", storedData.latitude);
+        printf("Longitude: %.3f\n", storedData.longitude);
+        printf("Direction: %c\n", storedData.direction);
+        printf("Accelerometer X: %.1f\n",storedData.accelerometerX);
+        printf("Accelerometer Y: %.1f\n", storedData.accelerometerY);
+        printf("Date: %02d/%02d/%04d\n", storedData.day, storedData.month, storedData.year);
+        printf("Time: %s %cM\n", storedData.time, storedData.ampm);
+
+
+    return 0;
+}
