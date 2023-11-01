@@ -1,0 +1,35 @@
+#include <stdio.h>
+
+//enum for states
+typedef enum {
+    STATE_ONE = 1,
+    STATE_TWO,
+    STATE_THREE,
+    STATE_FOUR,
+} State;
+
+// Function  to move the next state
+State transition(State current) {
+    switch (current) {
+        case STATE_ONE:
+            return STATE_TWO;
+        case STATE_TWO:
+            return STATE_THREE;
+        case STATE_THREE:
+            return STATE_FOUR;
+        case STATE_FOUR:
+            return STATE_ONE;
+        default:
+            return STATE_ONE;
+    }
+}
+
+void main() {
+    State currentState = STATE_ONE;
+
+    for (int i = 0; i < 5; i++) {
+        printf("Current State: %d\n", currentState);
+        currentState = transition(currentState);
+    }
+
+}
